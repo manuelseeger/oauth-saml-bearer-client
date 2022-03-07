@@ -1,0 +1,24 @@
+{
+  "name": "oauth-saml-bearer-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "verify": "node verify.js",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "commander": "^9.0.0",
+    "dayjs": "^1.10.7",
+    "fs": "^0.0.1-security",
+    "p12-pem": "^1.0.5",
+    "querystring": "^0.2.1",
+    "xml-crypto": "^2.1.3",
+    "xmldom": "^0.6.0"
+  }
+}

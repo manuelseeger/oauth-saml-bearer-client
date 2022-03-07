@@ -1,0 +1,8 @@
+node_modules/
+.vscode/
+*.pfx
+*.pem
+_debugassertion.xml
+_exampleassertion.xml
+verify/bin/
+verify/obj/
