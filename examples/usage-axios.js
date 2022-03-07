@@ -1,8 +1,9 @@
-import { OAuthSAMLBearerClient } from './oauthsamlbearerclient.js'
+import { OAuthSAMLBearerClient } from '../oauthsamlbearerclient.js'
 import fs from 'fs/promises'
 import path from 'path'
 import { Command } from 'commander'
 import axios from 'axios'
+
 
 (async () => {
     const program = new Command()
@@ -25,6 +26,7 @@ import axios from 'axios'
     }
 
     const oauthClient = new OAuthSAMLBearerClient(config)
+    // write _debugassertion.xml to CWD
     oauthClient.debug = true
 
     const c4c = axios.create({
@@ -41,7 +43,7 @@ import axios from 'axios'
     let customerResponse = await c4c.get('/customer/IndividualCustomerCollection', {
         params: {
             '$top': 1
-          }
+        }
     })
     console.log(customerResponse)
 
@@ -49,7 +51,7 @@ import axios from 'axios'
     let leadResponse = await c4c.get('/lead/LeadCollection', {
         params: {
             '$top': 1
-          }
+        }
     })
     console.log(leadResponse)
 
