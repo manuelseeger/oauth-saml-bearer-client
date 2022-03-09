@@ -42,8 +42,11 @@ let tokenResponse = await oauthClient.requestToken(nameId)
 ```
 If successful, the response is an [axios response object](https://axios-http.com/docs/res_schema) with a JSON payload containing token and validity.
 ```json
-{
-    "sdf": "sdf"
+{   
+    "access_token": "ABY-0tpvHtyn8V_Y0kZFExeEUsu41FIi9fP45VdLXfd2Mlf_", 
+    "token_type": "Bearer", 
+    "expires_in": "3600", 
+    "scope": "UIWC:CC_HOME"
 }
 ```
 See also [examples/usage.js](examples/usage-axios.js)

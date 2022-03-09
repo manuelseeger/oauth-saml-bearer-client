@@ -5,13 +5,11 @@ import utc from 'dayjs/plugin/utc.js'
 import { randomUUID } from 'crypto'
 import axios from 'axios'
 import path from 'path'
-import p12 from 'p12-pem'
 
 dayjs.extend(utc)
 
 export {
-    OAuthSAMLBearerClient, 
-    P12KeyInfo
+    OAuthSAMLBearerClient
 }
 
 class ConfigKeyInfo {
@@ -30,15 +28,6 @@ class ConfigKeyInfo {
         return this.key
     }
 }  
-
-class P12KeyInfo {
-    constructor(p12FilePath, password) {
-        const { pemKey, pemCertificate, commonName } = p12.getPemFromP12(p12FilePath, password)
-        this.key = pemKey
-        this.cert = pemCertificate
-        this.commonName = commonName
-    }
-}
 
 export default class OAuthSAMLBearerClient {
 
