@@ -2,6 +2,7 @@ node_modules/
 .vscode/
 *.pfx
 *.pem
+*.cer
 _debugassertion.xml
 _exampleassertion.xml
 verify/bin/
