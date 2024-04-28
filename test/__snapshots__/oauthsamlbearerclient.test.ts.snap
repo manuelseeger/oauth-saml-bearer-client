@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OAuthSAMLBearerClient constructor should match snapshot 1`] = `
+OAuthSAMLBearerClient {
+  "_accessTokens": {},
+  "_assertionTemplate": "<Assertion ID="@REF_ID"><custom></custom></Assertion>",
+  "config": {
+    "assertionTemplate": "<Assertion ID="@REF_ID"><custom></custom></Assertion>",
+    "certificate": "certificate",
+    "clientId": "_ABC123456",
+    "clientSecret": "1234567890",
+    "entityId": "HTTPS://my123456-sso.crm.ondemand.com",
+    "issuer": "unit-test",
+    "nameIdFormat": "emailAddress",
+    "scope": "UIWC:CC_HOME",
+    "signingKey": "private_key",
+    "tokenEndPoint": "https://my123456.crm.ondemand.com/sap/bc/sec/oauth2/token",
+  },
+  "refID": "A_unit-test",
+}
+`;
