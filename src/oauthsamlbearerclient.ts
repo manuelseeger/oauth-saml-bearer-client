@@ -8,20 +8,51 @@ dayjs.extend(utc);
 
 const DATE_TIME_FORMAT: string = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
 
-export type NameIdFormat = 'emailAddress' | 'unspecified';
-
 export interface OAuthSAMLBearerClientConfig {
+    /**
+     * The client ID of the OAuth client
+     */
     clientId: string;
+    /**
+     * The client secret of the OAuth client
+     */
     clientSecret: string;
+    /**
+     * The issuer of the assertion. This is the name of the OAuth identity provider
+     */
     issuer: string;
+    /**
+     * The entity ID of the oauth service provider
+     */
     entityId: string;
+    /**
+     * The token endpoint of the OAuth service provider
+     */
     tokenEndPoint: URL;
-    nameIdFormat: NameIdFormat;
+    /**
+     * The name ID format to use in the assertion. This can be either 'emailAddress' or 'unspecified'
+     */
+    nameIdFormat: 'emailAddress' | 'unspecified';
+    /**
+     * Optional: Overwrite the default assertion template.
+     */
     assertionTemplate?: string;
-    key: string;
+    /**
+     * The certificate to use for signing the assertion in PEM format.
+     */
     certificate: string;
+    /**
+     * The unencrypted private key to use for signing the assertion in PEM format.
+     */
     signingKey: string;
+    /**
+     * Optional: Cache the tokens for reuse. If set to true the token will be cached and reused until it expires.
+     */
     cacheTokens?: boolean;
+    /**
+     * The scope of the OAuth token requested from the service provider
+     */
+    scope: string;
 }
 
 export interface AccessToken {
@@ -37,7 +68,7 @@ interface StoredAccessToken {
 }
 
 export class OAuthSAMLBearerClient {
-    public config: OAuthSAMLBearerClientConfig;
+    protected config: OAuthSAMLBearerClientConfig;
     private refID: string;
     private _assertionTemplate?: string;
 
@@ -54,12 +85,31 @@ export class OAuthSAMLBearerClient {
 
     private _accessTokens: { [nameId: string]: StoredAccessToken } = {};
 
-    constructor(config: OAuthSAMLBearerClientConfig) {
+    /**
+     * Constructor
+     *
+     * @param config OAuthSAMLBearerClientConfig configuration object
+     * @param refId optional reference ID for the assertion, if not provided a random UUID will be generated
+     */
+    constructor(config: OAuthSAMLBearerClientConfig, refId?: string) {
         this.config = config;
-        this.refID = `A_${randomUUID()}`;
+        if (refId) {
+            this.refID = refId;
+        } else {
+            this.refID = `A_${randomUUID()}`;
+        }
     }
 
-    public async getAccessToken(nameId: string) {
+    /**
+     * Get an access token for the given nameId. If cacheTokens is set to true in the configuration
+     * the token will be cached and reused until it expires.
+     * If cacheTokens is not set or set to false the token will be requested from the token endpoint
+     * for every call.
+     *
+     * @param nameId the nameId of the user to get the token for
+     * @returns a promise that resolves to an AccessToken
+     */
+    public async getAccessToken(nameId: string): Promise<AccessToken> {
         if (!this.config.cacheTokens) {
             return this.requestToken(nameId);
         }
@@ -76,14 +126,20 @@ export class OAuthSAMLBearerClient {
         return this._accessTokens[nameId].token;
     }
 
+    /**
+     * Request a new token from the token endpoint for the given nameId
+     *
+     * @param nameId the nameId to use in the assertion
+     * @returns a promise that resolves to an AccessToken
+     */
     protected async requestToken(nameId: string): Promise<AccessToken> {
-        let assertion = await this.getAssertion(nameId);
-        let signedAssertion = await this.signAssertion(assertion);
+        let assertion = this.getAssertion(nameId);
+        let signedAssertion = this.signAssertion(assertion);
 
         let payload = new URLSearchParams({
             client_id: this.config.clientId,
             grant_type: 'urn:ietf:params:oauth:grant-type:saml2-bearer',
-            scope: 'UIWC:CC_HOME',
+            scope: this.config.scope,
             assertion: Buffer.from(signedAssertion).toString('base64'),
         }).toString();
 
@@ -97,15 +153,25 @@ export class OAuthSAMLBearerClient {
         );
         headers.set('Content-Type', 'application/x-www-form-urlencoded');
 
-        const tokenResponse = await fetch(this.config.tokenEndPoint, {
-            method: 'POST',
-            headers: headers,
-            body: payload,
-        });
+        const tokenResponse = await fetch(
+            this.config.tokenEndPoint.toString(),
+            {
+                method: 'POST',
+                headers: headers,
+                body: payload,
+            },
+        );
         return tokenResponse.json() as Promise<AccessToken>;
     }
 
-    protected async getAssertion(nameId: string) {
+    /**
+     * Get the assertion for the given nameId. This will replace all placeholders in the
+     * assertion template with the values from the configuration and the nameId.
+     *
+     * @param nameId The nameId to use in the assertion
+     * @returns
+     */
+    protected getAssertion(nameId: string) {
         let assertion = this.assertionTemplate;
 
         const replacements: { [key: string]: string } = {
@@ -129,7 +195,13 @@ export class OAuthSAMLBearerClient {
         return assertion;
     }
 
-    protected async signAssertion(assertionXml: string) {
+    /**
+     * Sign the assertion using the configured certificate and private key
+     *
+     * @param assertionXml The assertion to sign
+     * @returns the signed assertion
+     */
+    protected signAssertion(assertionXml: string) {
         const sign = new SignedXml({
             publicCert: this.config.certificate,
             privateKey: this.config.signingKey,
