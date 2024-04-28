@@ -6,3 +6,6 @@ _debugassertion.xml
 _exampleassertion.xml
 verify/bin/
 verify/obj/
+dist/
+lib/
+integrationtest/
