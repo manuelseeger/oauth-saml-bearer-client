@@ -35,10 +35,15 @@ describe('OAuthSAMLBearerClient', () => {
             signingKey: 'private_key',
             nameIdFormat: 'emailAddress',
             scope: 'UIWC:CC_HOME',
+            assertionTemplate:
+                '<Assertion ID="@REF_ID"><custom></custom></Assertion>',
         };
-        const client = new OAuthSAMLBearerClient(config, 'unit-test');
+        const client = new OAuthSAMLBearerClient(config, 'A_unit-test');
 
         expect(client).toBeInstanceOf(OAuthSAMLBearerClient);
+        expect(client.assertionTemplate).toEqual(
+            '<Assertion ID="@REF_ID"><custom></custom></Assertion>',
+        );
         expect(client).toMatchSnapshot();
     });
 
@@ -58,12 +63,12 @@ describe('OAuthSAMLBearerClient', () => {
             nameIdFormat: 'emailAddress',
             scope: 'UIWC:CC_HOME',
         };
-        const client = new OAuthSAMLBearerClient(config, 'unit-test');
+        const client = new OAuthSAMLBearerClient(config);
 
         fetchMock.mockResponseOnce(
             JSON.stringify({
                 access_token: 'access_token',
-                token_type: 'bearer',
+                token_type: 'Bearer',
                 expires_in: 3600,
                 scope: 'UIWC:CC_HOME',
             }),
@@ -72,7 +77,7 @@ describe('OAuthSAMLBearerClient', () => {
         const token = await client.getAccessToken(name);
         expect(token).toEqual({
             access_token: 'access_token',
-            token_type: 'bearer',
+            token_type: 'Bearer',
             expires_in: 3600,
             scope: 'UIWC:CC_HOME',
         });
@@ -95,12 +100,12 @@ describe('OAuthSAMLBearerClient', () => {
             scope: 'UIWC:CC_HOME',
             cacheTokens: true,
         };
-        const client = new OAuthSAMLBearerClient(config, 'unit-test');
+        const client = new OAuthSAMLBearerClient(config);
 
         fetchMock.mockResponse(
             JSON.stringify({
                 access_token: 'access_token',
-                token_type: 'bearer',
+                token_type: 'Bearer',
                 expires_in: 3600,
                 scope: 'UIWC:CC_HOME',
             }),

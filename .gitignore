@@ -9,3 +9,4 @@ verify/obj/
 dist/
 lib/
 integrationtest/
+coverage/

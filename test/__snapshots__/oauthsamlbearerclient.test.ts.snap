@@ -3,7 +3,9 @@
 exports[`OAuthSAMLBearerClient constructor should match snapshot 1`] = `
 OAuthSAMLBearerClient {
   "_accessTokens": {},
+  "_assertionTemplate": "<Assertion ID="@REF_ID"><custom></custom></Assertion>",
   "config": {
+    "assertionTemplate": "<Assertion ID="@REF_ID"><custom></custom></Assertion>",
     "certificate": "certificate",
     "clientId": "_ABC123456",
     "clientSecret": "1234567890",
@@ -14,6 +16,6 @@ OAuthSAMLBearerClient {
     "signingKey": "private_key",
     "tokenEndPoint": "https://my123456.crm.ondemand.com/sap/bc/sec/oauth2/token",
   },
-  "refID": "unit-test",
+  "refID": "A_unit-test",
 }
 `;

@@ -4,8 +4,7 @@
   "description": "An implementation of the OAuth 2.0 SAML Bearer Assertion Flow for Node.js",
   "scripts": {
     "test": "jest ./test",
-    "start": "node examples/usage.js",
-    "compile": "tsc"
+    "build": "tsc"
   },
   "files": [
     "*.md",
