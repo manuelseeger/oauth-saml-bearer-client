@@ -1,32 +1,35 @@
 {
-  "name": "oauth-saml-bearer-client",
-  "version": "1.0.0",
-  "description": "An implementation of the OAuth 2.0 SAML Bearer Assertion Flow for Node.js",
-  "scripts": {
-    "test": "jest ./test",
-    "build": "tsc"
-  },
-  "files": [
-    "*.md",
-    "bin",
-    "lib",
-    "LICENSE"
-  ],
-  "main": "lib/oauthsamlbearerclient.js",
-  "types": "lib/oauthsamlbearerclient.d.ts",
-  "author": "Manuel Seeger",
-  "license": "ISC",
-  "dependencies": {
-    "dayjs": "^1.10.7",
-    "xml-crypto": "^6.0.0"
-  },
-  "devDependencies": {
-    "@types/jest": "^29.5.12",
-    "@types/xml-crypto": "^1.4.6",
-    "jest": "^29.7.0",
-    "jest-fetch-mock": "^3.0.3",
-    "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
-  }
+    "name": "oauth-saml-bearer-client",
+    "version": "1.0.0",
+    "description": "An implementation of the OAuth 2.0 SAML Bearer Assertion Flow for Node.js",
+    "scripts": {
+        "test": "jest ./test",
+        "coverage": "jest --coverage",
+        "build": "tsc",
+        "prepublishOnly": "npm run build"
+    },
+    "files": [
+        "*.md",
+        "lib/",
+        "LICENSE"
+    ],
+    "main": "lib/oauthsamlbearerclient.js",
+    "types": "lib/oauthsamlbearerclient.d.ts",
+    "author": "Manuel Seeger",
+    "repository": "git@github.com:manuelseeger/oauth-saml-bearer-client.git",
+    "homepage": "https://github.com/manuelseeger/oauth-saml-bearer-client",
+    "license": "MIT",
+    "dependencies": {
+        "dayjs": "^1.10.7",
+        "xml-crypto": "^6.0.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^29.5.12",
+        "@types/xml-crypto": "^1.4.6",
+        "jest": "^29.7.0",
+        "jest-fetch-mock": "^3.0.3",
+        "ts-jest": "^29.1.2",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.4.5"
+    }
 }
